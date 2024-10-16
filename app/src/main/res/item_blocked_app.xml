@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/appIconBlocked"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/appNameBlocked"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="App Name"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/appIconBlocked"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/unblockButton"
+        app:layout_constraintHorizontal_bias="0"
+        tools:text="App Name" />
+
+    <TextView
+        android:id="@+id/blockedUrls"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textAppearance="?attr/textAppearanceListItemSmall"
+        app:layout_constraintStart_toEndOf="@+id/appIconBlocked"
+        app:layout_constraintTop_toBottomOf="@+id/appNameBlocked"
+        app:layout_constraintEnd_toStartOf="@+id/unblockButton"
+        app:layout_constraintHorizontal_bias="0"
+        tools:text="Blocked URLs will be displayed here"/>
+
+    <Button
+        android:id="@+id/unblockButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/green_button_background"
+        android:text="Unblock"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
