@@ -1,72 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="16dp">
-
-    <ImageView
-        android:id="@+id/appIcon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="16dp"
-        android:contentDescription="@string/app_icon"
-        android:src="@drawable/ic_launcher_foreground" />
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:strokeColor="@color/gray"
+    app:strokeWidth="1dp">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:padding="16dp">
+
         <ImageView
-            android:id="@+id/largeIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_margin="8dp"/>
+            android:id="@+id/appIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/app_icon"
+            android:src="@drawable/ic_launcher_foreground" />
 
-        <TextView
-            android:id="@+id/appName"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="App Name"
-            android:textAppearance="?attr/textAppearanceListItem" />
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/notificationTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Notification Title"
-            android:textAppearance="?attr/textAppearanceListItemSecondary" />
+            <ImageView
+                android:id="@+id/largeIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/notificationText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Notification Text"
-            android:textAppearance="?attr/textAppearanceListItemSecondary" />
+            <TextView
+                android:id="@+id/appName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="App Name"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
 
-        <TextView
-            android:id="@+id/notificationChannelId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Notification Channel ID"
-            android:textAppearance="?attr/textAppearanceListItemSecondary" />
+            <TextView
+                android:id="@+id/notificationTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notification Title"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="@color/gray" />
 
-        <Button
-            android:id="@+id/blockUrlButton"
+            <TextView
+                android:id="@+id/notificationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notification Text"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:id="@+id/notificationChannelId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notification Channel ID"
+                android:textAppearance="?attr/textAppearanceCaption"
+                android:textColor="@color/gray" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/blockUrlButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/block_url"
+                android:backgroundTint="@color/red"
+                android:textColor="@android:color/white"
+                app:cornerRadius="12dp" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/blockButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/red_button_background"
-            android:text="@string/block_url"
-            />
+            android:text="@string/block"
+            android:backgroundTint="@color/red"
+            android:textColor="@android:color/white"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"
+            app:cornerRadius="12dp" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/blockButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/red_button_background"
-        android:text="@string/block"
-        />
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>
