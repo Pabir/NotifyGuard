@@ -1,24 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-     xmlns:android="http://schemas.android.com/apk/res/android"
-     android:layout_height="wrap_content"
-     android:layout_width="match_parent"
-     android:padding="8dp"
-     android:orientation="horizontal">
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/gray">
 
-    <TextView
-         android:layout_height="wrap_content"
-         android:layout_width="0dp"
-         android:textSize="16sp"
-         android:layout_weight="1"
-         android:id="@+id/urlTextView"
-         android:text="URL" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
-    <Button
-         android:layout_height="wrap_content"
-         android:layout_width="wrap_content"
-         android:background="@drawable/green_button_background"
-         android:id="@+id/unblockUrlButton"
-         android:text="Unblock" />
+       <TextView
+            android:id="@+id/urlTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="URL"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/roboto"
+            android:lineSpacingExtra="2dp" />
 
-</LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/unblockUrlButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Unblock"
+            style="@style/Widget.MaterialComponents.Button"
+            app:backgroundTint="@color/green"
+            app:cornerRadius="8dp" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

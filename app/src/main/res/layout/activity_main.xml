@@ -22,20 +22,21 @@
          android:layout_alignParentBottom="true"
          android:id="@+id/buttonLayout">
 
-        <Button
-             android:layout_height="wrap_content"
-             android:layout_width="wrap_content"
-             android:background="@drawable/red_button_background"
-             android:id="@+id/btnBlockedApps"
-             android:text="Blocked Apps" />
+        <com.google.android.material.button.MaterialButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/btnBlockedApps"
+            android:text="Blocked Apps"
+            style="@style/Widget.MyApp.MaterialButton" />
 
-        <Button
-             android:layout_height="wrap_content"
-             android:layout_width="wrap_content"
-             android:background="@drawable/red_button_background"
-             android:layout_marginStart="16dp"
-             android:id="@+id/btnBlockedUrls"
-             android:text="Blocked URLs" />
+        <com.google.android.material.button.MaterialButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="16dp"
+            android:id="@+id/btnBlockedUrls"
+            android:text="Blocked URLs"
+            style="@style/Widget.MyApp.MaterialButton" />
+
 
     </LinearLayout>
 

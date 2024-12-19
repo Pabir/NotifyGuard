@@ -1,0 +1,50 @@
+{
+  "allFiles": [
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/AppListAdapter.java",
+      "selection": {
+        "end": {
+          "column": 28,
+          "index": 1890,
+          "line": 52
+        },
+        "start": {
+          "column": 28,
+          "index": 1890,
+          "line": 52
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/AppInfo.java",
+      "selection": {
+        "end": {
+          "column": 24,
+          "index": 720,
+          "line": 21
+        },
+        "start": {
+          "column": 24,
+          "index": 720,
+          "line": 21
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/NotificationInfo.java",
+      "selection": {
+        "end": {
+          "column": 0,
+          "index": 507,
+          "line": 25
+        },
+        "start": {
+          "column": 0,
+          "index": 507,
+          "line": 25
+        }
+      }
+    }
+  ],
+  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/AppInfo.java"
+}
