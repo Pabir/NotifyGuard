@@ -83,6 +83,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         if (isNotifyGuardApp) {
     holder.blockButton.setVisibility(View.GONE);
     holder.blockUrlButton.setVisibility(View.GONE);
+           holder.urlsTextView.setVisibility(View.GONE);
 } else {
     boolean isBlocked = sharedPreferences.getBoolean(appInfo.getPackageName(), false);
     boolean isBrowserApp = isBrowserApp(appInfo.getPackageName());
@@ -102,15 +103,39 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         holder.blockUrlButton.setVisibility(View.VISIBLE);
                holder.urlsTextView.setVisibility(View.VISIBLE);
         holder.blockUrlButton.setOnClickListener(v -> {
+    // Show confirmation dialog before blocking all URLs
+    new AlertDialog.Builder(context)
+        .setTitle("Block All URLs")
+        .setMessage("Are you sure you want to block all extracted URLs?")
+        .setPositiveButton("Block All", (dialog, which) -> {
+            // Retrieve the current blocked URLs from SharedPreferences
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            Set<String> blockedUrls = sharedPreferences.getStringSet("blockedUrls", new HashSet<>());
+            Set<String> blockedUrls = new HashSet<>(sharedPreferences.getStringSet("blockedUrls", new HashSet<>()));
+
+            // Add all extracted URLs to the blocked URLs set
             blockedUrls.addAll(extractedUrls);
+
+            // Save the updated set back to SharedPreferences
             editor.putStringSet("blockedUrls", blockedUrls);
             editor.apply();
-    
+
+            // Send broadcast to update other components (if needed)
             Intent intent = new Intent(ACTION_NOTIFICATION_PREFS_CHANGED);
             LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-        });
+
+            // Notify the user
+            Toast.makeText(context, "All URLs blocked successfully.", Toast.LENGTH_SHORT).show();
+
+            // Log the blocked URLs for debugging
+            Log.d("BlockedURLs", "Blocked URLs: " + blockedUrls);
+
+            // Refresh the UI if needed
+            notifyDataSetChanged();
+        })
+        .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+        .show();
+});
+
 
         // Set up the ListView with the extracted URLs
         // If URLs are available, show them in the TextView
