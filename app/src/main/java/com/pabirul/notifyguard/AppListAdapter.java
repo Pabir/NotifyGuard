@@ -5,12 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.text.SpannableString;
+import android.text.style.ClickableSpan;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 import java.util.List;
 import java.util.ArrayList;
 import android.widget.TextView;
@@ -25,10 +31,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import androidx.appcompat.app.AlertDialog;
+
 
 public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> {
 
     public static final String ACTION_NOTIFICATION_PREFS_CHANGED = "com.pabirul.notifyguard.ACTION_NOTIFICATION_PREFS_CHANGED";
+    private Set<String> blockedUrls;
 
     private Context context;
     private AppInfo[] appList;
@@ -114,7 +123,34 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
 
         // Set the combined URLs in the TextView
                    
-        holder.urlsTextView.setText(urlsBuilder.toString());
+        // Build clickable spans for each URL
+SpannableString spannableUrls = new SpannableString(urlsBuilder.toString());
+String[] urlsArray = urlsBuilder.toString().split("\n");
+
+int startIndex = 0;
+for (String url : urlsArray) {
+    int endIndex = startIndex + url.length();
+
+    // Create a clickable span for the URL
+    ClickableSpan clickableSpan = new ClickableSpan() {
+        @Override
+        public void onClick(View widget) {
+            // Show confirmation popup
+            showConfirmationPopup(context, url);
+        }
+    };
+
+    // Set the clickable span to the URL
+    spannableUrls.setSpan(clickableSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+    // Update startIndex for the next URL
+    startIndex = endIndex + 1; // +1 for the newline character
+}
+
+// Set the SpannableString to the TextView
+holder.urlsTextView.setText(spannableUrls);
+holder.urlsTextView.setMovementMethod(LinkMovementMethod.getInstance()); // Enable link clicks
+
         // Make the TextView visible
     } else {
         holder.urlsTextView.setVisibility(View.GONE); // Hide the TextView if no URLs
@@ -205,6 +241,38 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
            urlsTextView = view.findViewById(R.id.urlsTextView);
         }
     }
+    
+   private void showConfirmationPopup(Context context, String url) {
+    new AlertDialog.Builder(context)
+        .setTitle("Block Notifications")
+        .setMessage("Are you sure you want to block notifications from this URL?\n\n" + url)
+        .setPositiveButton("Block", (dialog, which) -> {
+            // Add URL to the blocked list and save it
+            addToBlockedUrls(url);
+
+            // Notify the user
+            Toast.makeText(context, "URL blocked: " + url, Toast.LENGTH_SHORT).show();
+        })
+        .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+        .show();
+}
+
+   private void addToBlockedUrls(String url) {
+    // Add the URL to the blockedUrls set
+       SharedPreferences.Editor editor = sharedPreferences.edit();
+       Set<String> blockedUrls = sharedPreferences.getStringSet("blockedUrls", new HashSet<>());
+    blockedUrls.add(url);
+
+    // Save the updated blockedUrls to SharedPreferences
+    
+    editor.putStringSet("blockedUrls", blockedUrls);
+    editor.apply();
+        Intent intent = new Intent(ACTION_NOTIFICATION_PREFS_CHANGED);
+            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    Log.d("BlockURL", "Blocked URL: " + url);
+}
+
+
 
     private boolean isBrowserApp(String packageName) {
         return packageName.equals("com.android.chrome") ||
