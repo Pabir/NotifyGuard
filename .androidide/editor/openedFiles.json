@@ -4,17 +4,62 @@
       "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/res/layout/item_app.xml",
       "selection": {
         "end": {
-          "column": 44,
-          "index": 3567,
-          "line": 88
+          "column": 46,
+          "index": 3412,
+          "line": 84
         },
         "start": {
-          "column": 44,
-          "index": 3567,
-          "line": 88
+          "column": 46,
+          "index": 3412,
+          "line": 84
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/res/layout/activity_main.xml",
+      "selection": {
+        "end": {
+          "column": 17,
+          "index": 1559,
+          "line": 41
+        },
+        "start": {
+          "column": 0,
+          "index": 0,
+          "line": 0
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/AppListAdapter.java",
+      "selection": {
+        "end": {
+          "column": 93,
+          "index": 6192,
+          "line": 137
+        },
+        "start": {
+          "column": 93,
+          "index": 6192,
+          "line": 137
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/AppInfo.java",
+      "selection": {
+        "end": {
+          "column": 4,
+          "index": 434,
+          "line": 16
+        },
+        "start": {
+          "column": 4,
+          "index": 434,
+          "line": 16
         }
       }
     }
   ],
-  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/res/layout/item_app.xml"
+  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/AppListAdapter.java"
 }

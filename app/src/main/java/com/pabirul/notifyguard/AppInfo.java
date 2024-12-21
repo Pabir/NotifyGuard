@@ -14,7 +14,7 @@ public class AppInfo {
     private String notificationText;
     private String notificationChannelId;
     private Set<String> blockedUrls;
-
+    private boolean isExpanded = false;
     public AppInfo(String packageName, String appName, Drawable appIcon, Bitmap largeIcon,
                    String notificationTitle, String notificationText, String notificationChannelId) {
         this.packageName = packageName;
@@ -60,5 +60,14 @@ public class AppInfo {
 
     public void setBlockedUrls(Set<String> blockedUrls) {
         this.blockedUrls = blockedUrls;
+    }
+    
+   // Getter and Setter for isExpanded
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
     }
 }
