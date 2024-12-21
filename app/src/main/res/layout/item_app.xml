@@ -71,6 +71,15 @@
                 android:text="Notification Channel ID"
                 android:textAppearance="?attr/textAppearanceCaption"
                 android:textColor="@color/gray" />
+            
+            <TextView
+                android:id="@+id/urlsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="text"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="@color/blue"
+                android:layout_marginTop="8dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/blockUrlButton"

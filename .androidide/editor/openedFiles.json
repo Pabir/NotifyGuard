@@ -4,14 +4,29 @@
       "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/AppListAdapter.java",
       "selection": {
         "end": {
-          "column": 28,
-          "index": 1890,
-          "line": 52
+          "column": 19,
+          "index": 5101,
+          "line": 115
         },
         "start": {
-          "column": 28,
-          "index": 1890,
-          "line": 52
+          "column": 19,
+          "index": 5101,
+          "line": 115
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/NotificationListener.java",
+      "selection": {
+        "end": {
+          "column": 36,
+          "index": 9905,
+          "line": 250
+        },
+        "start": {
+          "column": 36,
+          "index": 9905,
+          "line": 250
         }
       }
     },
@@ -19,32 +34,32 @@
       "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/AppInfo.java",
       "selection": {
         "end": {
-          "column": 24,
-          "index": 720,
-          "line": 21
+          "column": 0,
+          "index": 0,
+          "line": 0
         },
         "start": {
-          "column": 24,
-          "index": 720,
-          "line": 21
+          "column": 0,
+          "index": 0,
+          "line": 0
         }
       }
     },
     {
-      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/NotificationInfo.java",
+      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/res/layout/item_app.xml",
       "selection": {
         "end": {
-          "column": 0,
-          "index": 507,
-          "line": 25
+          "column": 12,
+          "index": 3271,
+          "line": 83
         },
         "start": {
-          "column": 0,
-          "index": 507,
-          "line": 25
+          "column": 12,
+          "index": 3271,
+          "line": 83
         }
       }
     }
   ],
-  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/AppInfo.java"
+  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/res/layout/item_app.xml"
 }
