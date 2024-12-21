@@ -19,9 +19,11 @@ import com.pabirul.notifyguard.AppListAdapter;
 import com.pabirul.notifyguard.DrawableUtils;
 import com.pabirul.notifyguard.PackageManagerWrapper;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -37,6 +39,9 @@ public class NotificationListener extends NotificationListenerService {
     private PackageManagerWrapper packageManagerWrapper;
     private Map<String, StatusBarNotification> packageToNotificationMap = new HashMap<>();
     private Set<String> blockedUrls = new HashSet<>();
+   // Store notifications for browser apps separately
+private Map<String, List<StatusBarNotification>> browserNotifications = new HashMap<>();
+
 
     public interface ListenerCallback {
         void onAppListUpdated(AppInfo[] appList);
@@ -127,9 +132,14 @@ public class NotificationListener extends NotificationListenerService {
         } else {
             if (!isNotificationBlocked(packageName, notification)) {
                 synchronized (appPackageNames) {
+                if (isBrowserApp(packageName)) {
+                    // Group browser notifications in a list
+                    browserNotifications.computeIfAbsent(packageName, k -> new ArrayList<>()).add(sbn);
+                } else {
                     appPackageNames.add(packageName);
                     packageToNotificationMap.put(packageName, sbn);
                 }
+            }
                 updateAppList();
             }
         }
@@ -163,7 +173,8 @@ public class NotificationListener extends NotificationListenerService {
             Set<String> extractedUrls = new HashSet<>();
             extractedUrls.addAll(extractUrls(title));
             extractedUrls.addAll(extractUrls(text));
-
+            
+//           saveExtractedUrls(extractedUrls);
             for (String blockedUrl : blockedUrls) {
                 if (title.contains(blockedUrl) || text.contains(blockedUrl)) {
                     return true;
@@ -173,11 +184,77 @@ public class NotificationListener extends NotificationListenerService {
         return false;
     }
 
+//   private void saveExtractedUrls(Set<String> extractedUrls) {
+//        // Optionally, store extracted URLs for later use or for showing them in the UI
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putStringSet("extractedUrls", extractedUrls);
+//        editor.apply();
+//    }
+    
     private void updateAppList() {
-        synchronized (appPackageNames) {
-            appList = new AppInfo[appPackageNames.size()];
-            int i = 0;
-            for (String packageName : appPackageNames) {
+    synchronized (appPackageNames) {
+        // Prepare a list for the app info
+        List<AppInfo> appInfoList = new ArrayList<>();
+
+        // Add notifications from browser apps as a single group
+        for (Map.Entry<String, List<StatusBarNotification>> entry : browserNotifications.entrySet()) {
+    String packageName = entry.getKey();
+    List<StatusBarNotification> notifications = entry.getValue();
+
+    // Combine details for the browser app notifications
+    StringBuilder combinedTitle = new StringBuilder();
+    StringBuilder combinedText = new StringBuilder();
+    StringBuilder combinedChannelId = new StringBuilder(); // Initialize for combined channel IDs
+    Set<String> allUrls = new HashSet<>();  // Initialize the set to store URLs
+
+    for (StatusBarNotification sbn : notifications) {
+        Notification notification = sbn.getNotification();
+
+        // Retrieve notification details
+        String notificationTitle = notification.extras.getString(Notification.EXTRA_TITLE, "");
+        String notificationText = notification.extras.getString(Notification.EXTRA_TEXT, "");
+        String channelId = notification.getChannelId(); // Get the channel ID
+
+        // Combine titles
+        if (combinedTitle.length() > 0) combinedTitle.append("\n");
+        combinedTitle.append(notificationTitle);
+
+        // Combine texts
+        if (combinedText.length() > 0) combinedText.append("\n");
+        combinedText.append(notificationText);
+
+        // Combine channel IDs
+        if (combinedChannelId.length() > 0) combinedChannelId.append("\n");
+        combinedChannelId.append(channelId);
+
+        // Extract URLs from the notification title and text
+        allUrls.addAll(extractUrls(notificationTitle));
+        allUrls.addAll(extractUrls(notificationText));
+    }
+
+    // Combine URLs into a single string
+    StringBuilder combinedUrls = new StringBuilder();
+    for (String url : allUrls) {
+        if (combinedUrls.length() > 0) combinedUrls.append("\n");
+        combinedUrls.append(url);
+    }
+
+    // Add the browser notifications as a single app info entry
+    Drawable appIcon = packageManagerWrapper.getApplicationIcon(packageName);
+    appInfoList.add(new AppInfo(
+        packageName,
+        "Browser Notifications",
+        appIcon,
+                        null,
+        combinedTitle.toString(),
+        combinedText.toString(),
+        combinedChannelId.toString()
+    ));
+}
+
+        // Add non-browser apps normally
+        for (String packageName : appPackageNames) {
+            if (!browserNotifications.containsKey(packageName)) { // Avoid adding browser notifications twice
                 String appName = packageManagerWrapper.getApplicationLabel(packageName);
                 Drawable appIcon = packageManagerWrapper.getApplicationIcon(packageName);
                 StatusBarNotification sbn = packageToNotificationMap.get(packageName);
@@ -189,29 +266,64 @@ public class NotificationListener extends NotificationListenerService {
                     Drawable largeIconDrawable = sbn.getNotification().getLargeIcon().loadDrawable(this);
                     largeIcon = DrawableUtils.drawableToBitmap(largeIconDrawable);
                 }
-                appList[i++] = new AppInfo(packageName, appName, appIcon, largeIcon, notificationTitle, notificationText, notificationChannelId);
+                appInfoList.add(new AppInfo(packageName, appName, appIcon, largeIcon, notificationTitle, notificationText, notificationChannelId));
             }
         }
-        if (listenerCallback != null) {
-            listenerCallback.onAppListUpdated(appList);
-        }
+
+        // Update app list
+        appList = appInfoList.toArray(new AppInfo[0]);
     }
+    if (listenerCallback != null) {
+        listenerCallback.onAppListUpdated(appList);
+    }
+        
+       for (AppInfo appInfo : appList) {
+    if (appInfo.getAppName().equals("Browser Notifications")) {
+        String urls = appInfo.getNotificationChannelId(); // Contains the combined URLs
+        Log.d("Browser URLs", "Extracted URLs from channelId: " + urls);
+    }
+}
+
+}
+
+
 
     private boolean isBrowserApp(String packageName) {
         return packageName.equals("com.android.chrome") || packageName.equals("org.mozilla.firefox") || packageName.equals("com.opera.browser");
     }
 
-    private Set<String> extractUrls(String text) {
-        Set<String> urls = new HashSet<>();
-        String urlPattern = "(https?://|www\\.|[a-zA-Z0-9-]+\\.[a-zA-Z]{2,})([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?";
-        Pattern pattern = Pattern.compile(urlPattern, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(text);
-        while (matcher.find()) {
-            String url = matcher.group();
-            urls.add(url);
-        }
+//    private Set<String> extractUrls(String text) {
+//        Set<String> urls = new HashSet<>();
+//        String urlPattern = "(https?://|www\\.|[a-zA-Z0-9-]+\\.[a-zA-Z]{2,})([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?";
+//        Pattern pattern = Pattern.compile(urlPattern, Pattern.CASE_INSENSITIVE);
+//        Matcher matcher = pattern.matcher(text);
+//        while (matcher.find()) {
+//            String url = matcher.group();
+//            urls.add(url);
+//        }
+//        return urls;
+//    }
+private Set<String> extractUrls(String text) {
+    Set<String> urls = new HashSet<>();
+    if (text == null || text.isEmpty()) {
+        Log.d("URLExtraction", "Text is null or empty");
         return urls;
     }
+
+    Log.d("URLExtraction", "Analyzing text: " + text);
+
+    String urlPattern = "(https?://|www\\.|[a-zA-Z0-9-]+\\.[a-zA-Z]{2,})([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?";
+    Pattern pattern = Pattern.compile(urlPattern, Pattern.CASE_INSENSITIVE);
+    Matcher matcher = pattern.matcher(text);
+
+    while (matcher.find()) {
+        String url = matcher.group();
+        urls.add(url);
+        Log.d("URLExtraction", "Extracted URL from extractUrls fn: " + url);
+    }
+
+    return urls;
+}
 
     private void saveBlockedUrls() {
         SharedPreferences.Editor editor = sharedPreferences.edit();

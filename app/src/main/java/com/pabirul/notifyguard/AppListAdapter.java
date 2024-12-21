@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
+import java.util.List;
+import java.util.ArrayList;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -64,53 +67,85 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         holder.notificationTitle.setText(context.getString(R.string.notification_title_text) + appInfo.getNotificationTitle());
         holder.notificationText.setText(context.getString(R.string.notification_text) + appInfo.getNotificationText());
         holder.notificationChannelId.setText(context.getString(R.string.notification_channel_id) + appInfo.getNotificationChannelId());
-
+        
         String notifyGuardPackageName = "com.pabirul.notifyguard";
         boolean isNotifyGuardApp = appInfo.getPackageName().equals(notifyGuardPackageName);
 
         if (isNotifyGuardApp) {
-            holder.blockButton.setVisibility(View.GONE);
-            holder.blockUrlButton.setVisibility(View.GONE);
-        } else {
-            boolean isBlocked = sharedPreferences.getBoolean(appInfo.getPackageName(), false);
-            boolean isBrowserApp = isBrowserApp(appInfo.getPackageName());
-            Set<String> extractedUrls = extractUrls(appInfo.getNotificationTitle() + " " + appInfo.getNotificationText() + " " + appInfo.getNotificationChannelId());
+    holder.blockButton.setVisibility(View.GONE);
+    holder.blockUrlButton.setVisibility(View.GONE);
+} else {
+    boolean isBlocked = sharedPreferences.getBoolean(appInfo.getPackageName(), false);
+    boolean isBrowserApp = isBrowserApp(appInfo.getPackageName());
+    Set<String> extractedUrls = extractUrls(appInfo.getNotificationTitle() + " " + appInfo.getNotificationText() + " " + appInfo.getNotificationChannelId());
 
-            holder.blockButton.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
-            holder.blockButton.setOnClickListener(v -> {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean(appInfo.getPackageName(), true);
-                editor.apply();
+    holder.blockButton.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
+    holder.blockButton.setOnClickListener(v -> {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(appInfo.getPackageName(), true);
+        editor.apply();
 
-                Intent intent = new Intent(ACTION_NOTIFICATION_PREFS_CHANGED);
-                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-            });
+        Intent intent = new Intent(ACTION_NOTIFICATION_PREFS_CHANGED);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    });
 
-            if (isBlocked || !isBrowserApp || extractedUrls.isEmpty()) {
-                holder.blockUrlButton.setVisibility(View.GONE);
-            } else {
-                holder.blockUrlButton.setVisibility(View.VISIBLE);
-                holder.blockUrlButton.setOnClickListener(v -> {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    Set<String> blockedUrls = sharedPreferences.getStringSet("blockedUrls", new HashSet<>());
-                    blockedUrls.addAll(extractedUrls);
-                    editor.putStringSet("blockedUrls", blockedUrls);
-                    editor.apply();
+    if (isBrowserApp) {
+        holder.blockUrlButton.setVisibility(View.VISIBLE);
+               holder.urlsTextView.setVisibility(View.VISIBLE);
+        holder.blockUrlButton.setOnClickListener(v -> {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            Set<String> blockedUrls = sharedPreferences.getStringSet("blockedUrls", new HashSet<>());
+            blockedUrls.addAll(extractedUrls);
+            editor.putStringSet("blockedUrls", blockedUrls);
+            editor.apply();
+    
+            Intent intent = new Intent(ACTION_NOTIFICATION_PREFS_CHANGED);
+            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+        });
 
-                    Intent intent = new Intent(ACTION_NOTIFICATION_PREFS_CHANGED);
-                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-                });
-            }
-
-            holder.appIcon.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
-            holder.appName.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
-            holder.notificationTitle.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
-            holder.notificationText.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
-            holder.notificationChannelId.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
-            holder.largeIcon.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
+        // Set up the ListView with the extracted URLs
+        // If URLs are available, show them in the TextView
+    if (extractedUrls != null && !extractedUrls.isEmpty()) {
+        // Combine URLs into a single string
+        StringBuilder urlsBuilder = new StringBuilder();
+        for (String url : extractedUrls) {
+            urlsBuilder.append(url).append("\n"); // Add each URL in a new line
         }
-    }
 
+        // Set the combined URLs in the TextView
+                   
+        holder.urlsTextView.setText(urlsBuilder.toString());
+        // Make the TextView visible
+    } else {
+        holder.urlsTextView.setVisibility(View.GONE); // Hide the TextView if no URLs
+    }
+        // Set the visibility of other elements based on the blocked status
+        holder.appIcon.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
+        holder.appName.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
+        holder.notificationTitle.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
+        holder.notificationText.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
+        holder.notificationChannelId.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
+        holder.largeIcon.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
+               
+    } else if (isBlocked || !isBrowserApp || extractedUrls.isEmpty()) {
+        holder.blockUrlButton.setVisibility(View.GONE);
+       holder.urlsTextView.setVisibility(View.GONE); // Hide ListView if no URLs
+    } else {
+    // Handle other conditions if necessary
+}
+
+
+    // Set the visibility for app details if blocked
+    holder.appIcon.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
+    holder.appName.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
+    holder.notificationTitle.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
+    holder.notificationText.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
+    holder.notificationChannelId.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
+    holder.largeIcon.setVisibility(isBlocked ? View.GONE : View.VISIBLE);
+           
+
+    }
+}
     private Set<String> extractUrls(String text) {
         Set<String> urls = new HashSet<>();
         String urlPattern = "(https?://|www\\.|[a-zA-Z0-9-]+\\.[a-zA-Z]{2,})([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?";
@@ -146,6 +181,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+      ListView notificationUrlsListView;
         final ImageView appIcon;
         final ImageView largeIcon;
         final TextView appName;
@@ -154,6 +190,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         final TextView notificationChannelId;
         final Button blockButton;
         final Button blockUrlButton;
+        final TextView urlsTextView;
 
         ViewHolder(View view) {
             super(view);
@@ -165,6 +202,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
             notificationChannelId = view.findViewById(R.id.notificationChannelId);
             blockButton = view.findViewById(R.id.blockButton);
             blockUrlButton = view.findViewById(R.id.blockUrlButton);
+           urlsTextView = view.findViewById(R.id.urlsTextView);
         }
     }
 
