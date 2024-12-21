@@ -4,7 +4,7 @@
     <string name="block">Block</string>
     <string name="notification_title">Notification Title</string>
     <string name="unblock">Unblock</string>
-    <string name="block_url">Block Url</string>
+    <string name="block_url">Block All Urls</string>
     <string name="notification_title_text">Title: </string>
     <string name="full_screen_image">Full screen image</string>
     <string name="notification_text">Text: </string>
