@@ -10,27 +10,75 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
 
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.List;
+
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.List;
+
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class ResultsActivity extends AppCompatActivity {
 
-    private ListView listView;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
-        listView = findViewById(R.id.listView);
+        // Initialize the AdwareScanner
+        AdwareScanner adwareScanner = new AdwareScanner(this);
 
-        // Retrieve the scan results passed from MainActivity
-        List<String> adwareApps = getIntent().getStringArrayListExtra("adwareApps");
+        // Get a list of adware apps
+        List<String> adwareApps = adwareScanner.scanInstalledApps();
 
-        if (adwareApps != null && !adwareApps.isEmpty()) {
-            // Display the flagged apps in the ListView
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, adwareApps);
-            listView.setAdapter(adapter);
-        } else {
-            // Show a toast if no adware is detected
-            Toast.makeText(this, "No Adware Detected!", Toast.LENGTH_LONG).show();
+        // Initialize the app list for the RecyclerView
+        List<ResultAppInfo> appList = new ArrayList<>();
+        PackageManager packageManager = getPackageManager();
+        List<ApplicationInfo> installedApps = packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
+
+        // Iterate through installed apps
+        for (ApplicationInfo app : installedApps) {
+            String appName = packageManager.getApplicationLabel(app).toString();
+            String packageName = app.packageName;
+            Drawable icon = packageManager.getApplicationIcon(app);
+
+            // Check if the app is flagged as potential adware
+            boolean isAdware = adwareApps.contains(appName);
+
+            // Add the app to the list
+            appList.add(new ResultAppInfo(appName, packageName, icon, isAdware));
         }
+
+        // Set up the RecyclerView
+        RecyclerView recyclerView = findViewById(R.id.resultsrecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        ResultsAdapter adapter = new ResultsAdapter(appList);
+        recyclerView.setAdapter(adapter);
     }
 }

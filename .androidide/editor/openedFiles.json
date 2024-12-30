@@ -1,22 +1,82 @@
 {
   "allFiles": [
     {
-      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/res/layout/activity_main.xml",
+      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/ResultsActivity.java",
       "selection": {
         "end": {
-          "column": 32,
-          "index": 564,
-          "line": 14
+          "column": 73,
+          "index": 2828,
+          "line": 78
         },
         "start": {
-          "column": 32,
-          "index": 564,
-          "line": 14
+          "column": 73,
+          "index": 2828,
+          "line": 78
         }
       }
     },
     {
-      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/res/layout/drawable/ic_launcher_background.xml",
+      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/ResultAppInfo.java",
+      "selection": {
+        "end": {
+          "column": 5,
+          "index": 722,
+          "line": 31
+        },
+        "start": {
+          "column": 5,
+          "index": 722,
+          "line": 31
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/ResultsAdapter.java",
+      "selection": {
+        "end": {
+          "column": 30,
+          "index": 331,
+          "line": 10
+        },
+        "start": {
+          "column": 30,
+          "index": 331,
+          "line": 10
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/res/layout/list_item_app.xml",
+      "selection": {
+        "end": {
+          "column": 5,
+          "index": 1608,
+          "line": 45
+        },
+        "start": {
+          "column": 5,
+          "index": 1608,
+          "line": 45
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/res/layout/values/colors.xml",
+      "selection": {
+        "end": {
+          "column": 29,
+          "index": 164,
+          "line": 4
+        },
+        "start": {
+          "column": 29,
+          "index": 164,
+          "line": 4
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/res/layout/values/themes.xml",
       "selection": {
         "end": {
           "column": 0,
@@ -31,7 +91,7 @@
       }
     },
     {
-      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/res/layout/drawable/green_button_background.xml",
+      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/res/layout/values/strings.xml",
       "selection": {
         "end": {
           "column": 0,
@@ -46,65 +106,20 @@
       }
     },
     {
-      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/res/layout/drawable/notification512_1_.xml",
+      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/AdwareScanner.java",
       "selection": {
         "end": {
           "column": 0,
-          "index": 0,
-          "line": 0
+          "index": 1749,
+          "line": 55
         },
         "start": {
           "column": 0,
           "index": 0,
           "line": 0
-        }
-      }
-    },
-    {
-      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/res/layout/drawable/red_button_background.xml",
-      "selection": {
-        "end": {
-          "column": 0,
-          "index": 0,
-          "line": 0
-        },
-        "start": {
-          "column": 0,
-          "index": 0,
-          "line": 0
-        }
-      }
-    },
-    {
-      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/res/drawable/fade_effect.xml",
-      "selection": {
-        "end": {
-          "column": 0,
-          "index": 263,
-          "line": 6
-        },
-        "start": {
-          "column": 0,
-          "index": 263,
-          "line": 6
-        }
-      }
-    },
-    {
-      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/res/layout/item_app.xml",
-      "selection": {
-        "end": {
-          "column": 9,
-          "index": 4092,
-          "line": 101
-        },
-        "start": {
-          "column": 9,
-          "index": 4092,
-          "line": 101
         }
       }
     }
   ],
-  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/res/layout/activity_main.xml"
+  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/ResultsAdapter.java"
 }
