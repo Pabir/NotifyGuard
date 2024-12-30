@@ -13,9 +13,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
+import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -35,17 +36,32 @@ public class MainActivity extends AppCompatActivity implements NotificationListe
     private AppListAdapter appListAdapter;
     private Button btnBlockedApps, btnBlockedUrls;
     private SharedPreferences sharedPreferences;
+    private Button scanButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        scanButton = findViewById(R.id.scanButton);
 
         sharedPreferences = getSharedPreferences("NotificationPrefs", Context.MODE_PRIVATE);
 
         // Create notification channel
         createNotificationChannel();
+        
+        scanButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+                public void onClick(View v) {
+                   // Start the scan and pass results to the ResultsActivity
+                AdwareScanner adwareScanner = new AdwareScanner(MainActivity.this);
+                ArrayList<String> adwareApps = (ArrayList<String>) adwareScanner.scanInstalledApps();
 
+                Intent intent = new Intent(MainActivity.this, ResultsActivity.class);
+                intent.putStringArrayListExtra("adwareApps", adwareApps);
+                startActivity(intent);
+                }
+        });
         // Check for POST_NOTIFICATIONS permission
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, POST_NOTIFICATIONS) != PERMISSION_GRANTED) {

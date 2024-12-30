@@ -1,42 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-     xmlns:android="http://schemas.android.com/apk/res/android"
-     android:layout_height="match_parent"
-     android:layout_width="match_parent"
-     android:padding="8dp">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
 
+    <!-- RecyclerView for displaying the list -->
     <androidx.recyclerview.widget.RecyclerView
-         android:layout_height="0dp"
-         android:layout_width="match_parent"
-         android:layout_above="@+id/buttonLayout"
-         android:padding="8dp"
-         android:layout_alignParentTop="true"
-         android:id="@+id/recyclerView" />
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/divider"
+        android:padding="8dp" />
+    
+    <!-- Horizontal Divider -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/buttonLayout"
+        android:background="@android:color/darker_gray"
+        android:layout_marginVertical="8dp" />
 
+    <!-- Button Layout at the bottom -->
     <LinearLayout
-         android:layout_height="wrap_content"
-         android:layout_width="wrap_content"
-         android:layout_marginBottom="8dp"
-         android:orientation="horizontal"
-         android:layout_centerHorizontal="true"
-         android:layout_alignParentBottom="true"
-         android:id="@+id/buttonLayout">
+        android:id="@+id/buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical">
 
+        <!-- Blocked Apps Button -->
         <com.google.android.material.button.MaterialButton
-             android:layout_height="wrap_content"
-             android:layout_width="wrap_content"
-             style="@style/Widget.MyApp.MaterialButton"
-             android:id="@+id/btnBlockedApps"
-             android:text="Blocked Apps" />
+            android:id="@+id/btnBlockedApps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Blocked Apps"
+            style="@style/Widget.MyApp.MaterialButton" />
 
+        <!-- Blocked URLs Button -->
         <com.google.android.material.button.MaterialButton
-             android:layout_height="wrap_content"
-             android:layout_width="wrap_content"
-             style="@style/Widget.MyApp.MaterialButton"
-             android:layout_marginStart="16dp"
-             android:id="@+id/btnBlockedUrls"
-             android:text="Blocked URLs" />
+            android:id="@+id/btnBlockedUrls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Blocked URLs"
+            style="@style/Widget.MyApp.MaterialButton" />
 
+        <!-- Main Content Layout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Title Text -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Adware Scanner"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:paddingBottom="8dp" />
+
+            <!-- Scan Button -->
+            <Button
+                android:id="@+id/scanButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Scan for Adware"
+                android:backgroundTint="@android:color/holo_blue_dark"
+                android:textColor="@android:color/white"
+                android:padding="10dp"
+                android:layout_marginBottom="8dp" />
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
