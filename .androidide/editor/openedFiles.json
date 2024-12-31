@@ -4,14 +4,14 @@
       "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/ResultsActivity.java",
       "selection": {
         "end": {
-          "column": 73,
-          "index": 2828,
-          "line": 78
+          "column": 0,
+          "index": 2083,
+          "line": 54
         },
         "start": {
-          "column": 73,
-          "index": 2828,
-          "line": 78
+          "column": 0,
+          "index": 2083,
+          "line": 54
         }
       }
     },
@@ -34,14 +34,14 @@
       "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/ResultsAdapter.java",
       "selection": {
         "end": {
-          "column": 30,
-          "index": 331,
-          "line": 10
+          "column": 0,
+          "index": 2405,
+          "line": 71
         },
         "start": {
-          "column": 30,
-          "index": 331,
-          "line": 10
+          "column": 0,
+          "index": 0,
+          "line": 0
         }
       }
     },
@@ -109,9 +109,24 @@
       "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/AdwareScanner.java",
       "selection": {
         "end": {
+          "column": 7,
+          "index": 507,
+          "line": 18
+        },
+        "start": {
+          "column": 7,
+          "index": 507,
+          "line": 18
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/res/layout/activity_results.xml",
+      "selection": {
+        "end": {
           "column": 0,
-          "index": 1749,
-          "line": 55
+          "index": 0,
+          "line": 0
         },
         "start": {
           "column": 0,
@@ -121,5 +136,5 @@
       }
     }
   ],
-  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/ResultsAdapter.java"
+  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/NotifyGuard/app/src/main/java/com/pabirul/notifyguard/ResultsActivity.java"
 }
