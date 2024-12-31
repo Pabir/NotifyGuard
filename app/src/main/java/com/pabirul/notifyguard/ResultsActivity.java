@@ -1,41 +1,10 @@
 package com.pabirul.notifyguard;
 
-
-import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.List;
-
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import java.util.ArrayList;
-import java.util.List;
 
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import java.util.ArrayList;
-import java.util.List;
-
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -71,14 +40,15 @@ public class ResultsActivity extends AppCompatActivity {
             // Check if the app is flagged as potential adware
             boolean isAdware = adwareApps.contains(appName);
 
-            // Add the app to the list
-            appList.add(new ResultAppInfo(appName, packageName, icon, isAdware));
+            if (isAdware) { // Only add flagged apps to the list
+                appList.add(new ResultAppInfo(appName, packageName, icon, true));
+            }
         }
 
         // Set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.resultsrecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ResultsAdapter adapter = new ResultsAdapter(appList);
+        ResultsAdapter adapter = new ResultsAdapter(appList); // Pass only flagged apps
         recyclerView.setAdapter(adapter);
     }
 }
