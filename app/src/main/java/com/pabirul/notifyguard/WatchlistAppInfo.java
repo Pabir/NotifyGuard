@@ -3,17 +3,15 @@ package com.pabirul.notifyguard;
 import android.graphics.drawable.Drawable;
 import java.io.Serializable;
 
-public class ResultAppInfo{
+public class WatchlistAppInfo{
     private final String name;
     private final String packageName;
     private final Drawable icon;
-    private boolean isAdware;
 
-    public ResultAppInfo(String name, String packageName, Drawable icon, boolean isAdware) {
+    public WatchlistAppInfo(String name, String packageName, Drawable icon) {
         this.name = name;
         this.packageName = packageName;
         this.icon = icon;
-        this.isAdware = isAdware;
     }
 
     public String getName() {
@@ -26,9 +24,5 @@ public class ResultAppInfo{
 
     public Drawable getIcon() {
         return icon;
-    }
-    
-    public boolean isAdware() {
-        return isAdware;
     }
 }
