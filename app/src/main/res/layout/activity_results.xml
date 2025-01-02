@@ -16,12 +16,22 @@
         android:gravity="center"
         android:paddingBottom="8dp" />
 
+    <!-- Button to view the watchlist -->
+    <Button
+        android:id="@+id/watchlistButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Watchlist"
+        android:layout_below="@id/resultstitleTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp" />
+
     <!-- RecyclerView for displaying app results -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/resultsrecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/resultstitleTextView"
+        android:layout_below="@id/watchlistButton"
         android:padding="8dp"
         android:scrollbars="vertical" />
 

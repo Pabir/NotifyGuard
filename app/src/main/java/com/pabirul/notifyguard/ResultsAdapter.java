@@ -1,20 +1,26 @@
 package com.pabirul.notifyguard;
 
-import java.util.List;
+import android.content.Context;
+import android.graphics.Color;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.view.View;
-import android.view.LayoutInflater;
-import androidx.recyclerview.widget.RecyclerView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
-import android.graphics.Color;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHolder> {
 
     private final List<ResultAppInfo> appList;
+    private final Context context;
 
-    public ResultsAdapter(List<ResultAppInfo> appList) {
+    public ResultsAdapter(Context context, List<ResultAppInfo> appList) {
+        this.context = context;
         this.appList = appList;
     }
 
@@ -30,23 +36,39 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ResultAppInfo appInfo = appList.get(position);
 
-        // Set the app icon
+        // Set the app icon, name, and package name
         holder.appIconImageView.setImageDrawable(appInfo.getIcon());
-
-        // Set the app name
         holder.appNameTextView.setText(appInfo.getName());
-
-        // Set additional details (e.g., package name)
         holder.appDetailsTextView.setText(appInfo.getPackageName());
-        
-        // Highlight if the app is adware
+
+        // Highlight if the app is flagged as adware
         if (appInfo.isAdware()) {
-           holder.warningTextView.setVisibility(View.VISIBLE);
+            holder.warningTextView.setVisibility(View.VISIBLE);
             holder.warningTextView.setText("Potential Adware Detected!");
             holder.warningTextView.setTextColor(Color.RED);
         } else {
             holder.warningTextView.setVisibility(View.GONE);
         }
+
+        // Set up the "Add to Watchlist" button
+        holder.addwatchlistButton.setOnClickListener(v -> {
+            WatchlistAppInfo watchlistApp = new WatchlistAppInfo(
+                    appInfo.getName(),
+                    appInfo.getPackageName(),
+                    appInfo.getIcon()
+            );
+               // Remove the app from the current list
+            appList.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, appList.size());
+
+            boolean added = WatchlistManager.addToWatchlist(watchlistApp);
+            if (added) {
+                Toast.makeText(context, appInfo.getName() + " added to Watchlist", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, appInfo.getName() + " is already in Watchlist", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -59,6 +81,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
         final TextView appNameTextView;
         final TextView appDetailsTextView;
         final TextView warningTextView;
+        final TextView addwatchlistButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,6 +89,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
             appNameTextView = itemView.findViewById(R.id.appNameTextView);
             appDetailsTextView = itemView.findViewById(R.id.appDetailsTextView);
             warningTextView = itemView.findViewById(R.id.warningTextView);
+            addwatchlistButton = itemView.findViewById(R.id.addwatchlistButton);
         }
     }
 }

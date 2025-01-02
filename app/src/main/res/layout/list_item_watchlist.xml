@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_height="wrap_content"
+     android:layout_width="match_parent"
+     android:background="?android:attr/selectableItemBackground"
+     android:padding="8dp">
+
+    <ImageView
+         android:layout_height="48dp"
+         android:layout_width="48dp"
+         android:contentDescription="App Icon"
+         android:layout_centerVertical="true"
+         android:layout_alignParentStart="true"
+         android:id="@+id/appIconImageView" />
+
+    <TextView
+         android:layout_height="wrap_content"
+         android:layout_width="wrap_content"
+         android:layout_toEndOf="@id/appIconImageView"
+         android:textSize="16sp"
+         android:textColor="#000"
+         android:layout_marginStart="12dp"
+         android:layout_alignParentTop="true"
+         android:id="@+id/appNameTextView"
+         android:textStyle="bold" />
+
+    <TextView
+         android:layout_height="wrap_content"
+         android:layout_width="wrap_content"
+         android:layout_toEndOf="@id/appIconImageView"
+         android:layout_below="@id/appNameTextView"
+         android:textSize="14sp"
+         android:textColor="#666"
+         android:layout_marginStart="12dp"
+         android:id="@+id/packageNameTextView" />
+
+    <Button
+         android:layout_height="wrap_content"
+         android:layout_width="wrap_content"
+         android:layout_centerVertical="true"
+         android:layout_alignParentEnd="true"
+         android:backgroundTint="@color/design_default_color_error"
+         android:textColor="@android:color/white"
+         android:id="@+id/removeFromWatchlistButton"
+         android:text="Remove" />
+
+</RelativeLayout>

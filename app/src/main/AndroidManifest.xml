@@ -25,6 +25,7 @@
         </service>
         
         <activity android:name=".ResultsActivity" />
+        <activity android:name=".WatchlistActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
