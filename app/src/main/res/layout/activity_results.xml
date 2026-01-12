@@ -1,38 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="8dp">
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_height="match_parent"
+     android:layout_width="match_parent"
+     android:padding="8dp">
 
-    <!-- Title Text -->
     <TextView
-        android:id="@+id/resultstitleTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Adware Scanner Results"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:paddingBottom="8dp" />
+         android:layout_height="wrap_content"
+         android:layout_width="match_parent"
+         android:gravity="center"
+         android:textSize="18sp"
+         android:paddingBottom="8dp"
+         android:id="@+id/resultstitleTextView"
+         android:text="Adware Scanner Results"
+         android:textStyle="bold" />
 
-    <!-- Button to view the watchlist -->
     <Button
-        android:id="@+id/watchlistButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="View Watchlist"
-        android:layout_below="@id/resultstitleTextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp" />
+         android:layout_height="wrap_content"
+         android:layout_width="wrap_content"
+         android:layout_below="@id/resultstitleTextView"
+         android:layout_centerHorizontal="true"
+         android:layout_marginTop="8dp"
+         android:id="@+id/watchlistButton"
+         android:text="View Watchlist" />
 
-    <!-- RecyclerView for displaying app results -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/resultsrecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/watchlistButton"
-        android:padding="8dp"
-        android:scrollbars="vertical" />
+         android:layout_height="match_parent"
+         android:layout_width="match_parent"
+         android:scrollbars="vertical"
+         android:layout_below="@id/watchlistButton"
+         android:padding="8dp"
+         android:id="@+id/resultsrecyclerView" />
 
 </RelativeLayout>

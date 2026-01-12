@@ -11,12 +11,15 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import java.util.ArrayList;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements NotificationListe
     private Button btnBlockedApps, btnBlockedUrls;
     private SharedPreferences sharedPreferences;
     private Button scanButton;
+    private LoadingDialogFragment loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +56,11 @@ public class MainActivity extends AppCompatActivity implements NotificationListe
         
         scanButton.setOnClickListener(new View.OnClickListener(){
             @Override
-                public void onClick(View v) {
-                   // Start the scan and pass results to the ResultsActivity
-                AdwareScanner adwareScanner = new AdwareScanner(MainActivity.this);
-                ArrayList<String> adwareApps = (ArrayList<String>) adwareScanner.scanInstalledApps();
-
-                Intent intent = new Intent(MainActivity.this, ResultsActivity.class);
-                intent.putStringArrayListExtra("adwareApps", adwareApps);
-                startActivity(intent);
-                }
+            public void onClick(View v) {
+                startAdwareScan();
+            }
         });
+        
         // Check for POST_NOTIFICATIONS permission
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, POST_NOTIFICATIONS) != PERMISSION_GRANTED) {
@@ -99,6 +98,65 @@ public class MainActivity extends AppCompatActivity implements NotificationListe
         }, new IntentFilter(AppListAdapter.ACTION_NOTIFICATION_PREFS_CHANGED));
     }
 
+    private void startAdwareScan() {
+        // Show loading dialog
+        showLoadingDialog("Scanning for Adware...");
+        
+        // Disable scan button to prevent multiple clicks
+        scanButton.setEnabled(false);
+        
+        // Start async scan
+        AdwareScanner adwareScanner = new AdwareScanner(MainActivity.this);
+        adwareScanner.scanInstalledAppsAsync(new AdwareScanner.ScanListener() {
+            @Override
+            public void onScanComplete(ArrayList<String> adwareApps) {
+                runOnUiThread(() -> {
+                    // Hide loading dialog
+                    hideLoadingDialog();
+                    
+                    // Re-enable scan button
+                    scanButton.setEnabled(true);
+                    
+                    // Start ResultsActivity with scan results
+                    Intent intent = new Intent(MainActivity.this, ResultsActivity.class);
+                    intent.putStringArrayListExtra("adwareApps", adwareApps);
+                    startActivity(intent);
+                });
+            }
+
+            @Override
+            public void onScanProgressUpdate(int progress, int total) {
+                runOnUiThread(() -> {
+                    if (loadingDialog != null && loadingDialog.isAdded()) {
+                        String message = String.format("Scanning... %d/%d apps", progress, total);
+                        loadingDialog.updateMessage(message);
+                    }
+                });
+            }
+        });
+    }
+
+    private void showLoadingDialog(String message) {
+        if (loadingDialog == null || !loadingDialog.isAdded()) {
+            loadingDialog = LoadingDialogFragment.newInstance(message);
+            loadingDialog.show(getSupportFragmentManager(), "LoadingDialog");
+        }
+    }
+
+    private void hideLoadingDialog() {
+        if (loadingDialog != null && loadingDialog.isAdded()) {
+            loadingDialog.dismiss();
+        }
+        loadingDialog = null;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        hideLoadingDialog();
+    }
+
+    // Rest of the existing methods remain the same...
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelId = "your_channel_id";
@@ -121,10 +179,10 @@ public class MainActivity extends AppCompatActivity implements NotificationListe
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE); // Add FLAG_IMMUTABLE here
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "your_channel_id")
-                .setSmallIcon(R.drawable.ic_launcher_background) // Replace with your app's icon
+                .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle("Notification Title")
                 .setContentText("This is a notification from NotifyGuard")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -135,7 +193,6 @@ public class MainActivity extends AppCompatActivity implements NotificationListe
             notificationManager.notify(1, builder.build());
         }
     }
-
 
     private boolean isNotificationServiceEnabled() {
         String pkgName = getPackageName();
@@ -169,7 +226,6 @@ public class MainActivity extends AppCompatActivity implements NotificationListe
     }
 
     private void updateAppList() {
-        // Call the service to update the app list
         if (NotificationListener.getAppList() != null) {
             onAppListUpdated(NotificationListener.getAppList());
         }

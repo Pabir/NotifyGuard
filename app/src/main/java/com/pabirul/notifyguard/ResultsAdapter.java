@@ -5,11 +5,13 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -50,6 +52,16 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
             holder.warningTextView.setVisibility(View.GONE);
         }
 
+        // Make app name clickable to show permissions
+        holder.appNameTextView.setOnClickListener(v -> {
+            AppPermissionsDialog dialog = AppPermissionsDialog.newInstance(
+                    appInfo.getPackageName(), 
+                    appInfo.getName()
+            );
+            dialog.show(((FragmentActivity) context).getSupportFragmentManager(), 
+                       "AppPermissionsDialog");
+        });
+
         // Set up the "Add to Watchlist" button
         holder.addwatchlistButton.setOnClickListener(v -> {
             WatchlistAppInfo watchlistApp = new WatchlistAppInfo(
@@ -57,7 +69,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
                     appInfo.getPackageName(),
                     appInfo.getIcon()
             );
-               // Remove the app from the current list
+            // Remove the app from the current list
             appList.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, appList.size());
@@ -81,7 +93,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
         final TextView appNameTextView;
         final TextView appDetailsTextView;
         final TextView warningTextView;
-        final TextView addwatchlistButton;
+        final Button addwatchlistButton; // Changed from TextView to Button
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
